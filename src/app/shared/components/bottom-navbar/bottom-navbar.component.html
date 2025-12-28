@@ -1,0 +1,43 @@
+<nav
+  class="fixed bottom-0 left-0 w-full bg-card-light/95 dark:bg-card-dark/95 backdrop-blur-lg border-t border-gray-200 dark:border-gray-800 pb-safe pt-2 px-6 z-40">
+  <div class="flex items-center justify-between max-w-md mx-auto h-16">
+    <!-- Pasti Tab -->
+    <button (click)="navigateTo('/meals')" class="flex flex-col items-center gap-1 w-16 transition-colors"
+      [ngClass]="isActive('/meals') ? 'text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'">
+      <span class="material-symbols-outlined text-[26px]"
+        [ngClass]="{'filled': isActive('/meals')}">restaurant_menu</span>
+      <span class="text-[10px]" [ngClass]="isActive('/meals') ? 'font-bold' : 'font-medium'">Pasti</span>
+    </button>
+
+    <!-- Idratazione Tab -->
+    <button (click)="navigateTo('/hydration')" class="flex flex-col items-center gap-1 w-16 transition-colors"
+      [ngClass]="isActive('/hydration') ? 'text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'">
+      <span class="material-symbols-outlined text-[26px]"
+        [ngClass]="{'filled': isActive('/hydration')}">water_drop</span>
+      <span class="text-[10px]" [ngClass]="isActive('/hydration') ? 'font-bold' : 'font-medium'">Idratazione</span>
+    </button>
+
+    <!-- FAB Style Add Button in Nav -->
+    <div class="relative -top-6">
+      <button (click)="onFabClick()"
+        class="size-14 rounded-full bg-primary shadow-lg shadow-primary/40 flex items-center justify-center text-gray-900 hover:scale-105 active:scale-95 transition-all">
+        <span class="material-symbols-outlined text-[32px]">add</span>
+      </button>
+    </div>
+
+    <!-- Allenamento Tab -->
+    <button (click)="navigateTo('/workout')" class="flex flex-col items-center gap-1 w-16 transition-colors"
+      [ngClass]="isActive('/workout') ? 'text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'">
+      <span class="material-symbols-outlined text-[26px]"
+        [ngClass]="{'filled': isActive('/workout')}">fitness_center</span>
+      <span class="text-[10px]" [ngClass]="isActive('/workout') ? 'font-bold' : 'font-medium'">Allenamento</span>
+    </button>
+
+    <!-- Profilo Tab -->
+    <button (click)="navigateTo('/profile')" class="flex flex-col items-center gap-1 w-16 transition-colors"
+      [ngClass]="isActive('/profile') ? 'text-primary' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'">
+      <span class="material-symbols-outlined text-[26px]" [ngClass]="{'filled': isActive('/profile')}">person</span>
+      <span class="text-[10px]" [ngClass]="isActive('/profile') ? 'font-bold' : 'font-medium'">Profilo</span>
+    </button>
+  </div>
+</nav>

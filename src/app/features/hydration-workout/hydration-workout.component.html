@@ -1,0 +1,102 @@
+<!-- Top App Bar -->
+<header class="flex items-center justify-between p-4 pb-2 sticky top-0 z-20 glass-panel backdrop-blur-md">
+    <div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-white dark:bg-card-dark shadow-sm">
+        <span class="material-symbols-outlined">calendar_today</span>
+    </div>
+    <h2 class="text-lg font-bold leading-tight tracking-tight">Oggi</h2>
+    <button class="flex size-10 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+        <div class="h-full w-full bg-gray-300 dark:bg-gray-600"></div>
+    </button>
+</header>
+
+<main class="flex flex-col gap-6 px-4 pt-2">
+    <!-- Hydration Card -->
+    <section class="rounded-xl bg-card-light dark:bg-card-dark p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-500 filled">water_drop</span>
+                <h3 class="text-base font-bold">Idratazione</h3>
+            </div>
+            <span
+                class="text-xs font-medium px-2 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+                Obiettivo: {{ waterGoal }}L
+            </span>
+        </div>
+
+        <div class="flex flex-col items-center justify-center py-2">
+            <h1 class="text-4xl font-extrabold tracking-tight">
+                {{ waterConsumed | number:'1.1-1' }}<span
+                    class="text-xl text-gray-500 dark:text-gray-400 font-bold">L</span>
+            </h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">di {{ waterGoal }}L raggiunti</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mt-6 mb-6">
+            <div class="flex justify-between text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                <span>0L</span>
+                <span>{{ waterProgress | number:'1.0-0' }}%</span>
+                <span>{{ waterGoal }}L</span>
+            </div>
+            <div class="h-4 w-full rounded-full bg-gray-100 dark:bg-gray-700 overflow-hidden relative">
+                <div class="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all duration-300"
+                    [style.width.%]="waterProgress"></div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-3">
+            <button (click)="addWater(250)"
+                class="flex flex-1 items-center justify-center gap-2 rounded-xl h-12 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-bold text-sm hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
+                <span class="material-symbols-outlined text-[20px]">local_drink</span>
+                +250ml
+            </button>
+            <button (click)="addWater(500)"
+                class="flex flex-1 items-center justify-center gap-2 rounded-xl h-12 bg-primary text-gray-900 font-bold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                <span class="material-symbols-outlined text-[20px]">water_bottle</span>
+                +500ml
+            </button>
+        </div>
+    </section>
+
+    <!-- Workout Section -->
+    <section>
+        <div class="flex items-end justify-between px-1 mb-4">
+            <h2 class="text-xl font-bold">Allenamento di Oggi</h2>
+            <span class="text-sm font-medium text-primary">{{ completedCount }}/{{ totalCount }} Completati</span>
+        </div>
+
+        <div class="flex flex-col gap-3">
+            <div *ngFor="let workout of workouts"
+                class="group flex items-center justify-between p-4 rounded-xl bg-card-light dark:bg-card-dark shadow-sm border transition-all"
+                [ngClass]="{
+             'border-transparent hover:border-primary/20 cursor-pointer': !workout.completed,
+             'border-primary/20': workout.completed && workouts.indexOf(workout) === completedCount - 1,
+             'opacity-60': workout.completed && workouts.indexOf(workout) !== completedCount - 1,
+             'border-l-4 !border-primary shadow-primary/10 cursor-pointer': !workout.completed && workouts.indexOf(workout) === completedCount
+           }"
+                (click)="!workout.completed && workouts.indexOf(workout) === completedCount ? navigateToWorkoutDetails() : toggleWorkout(workout.id)">
+                <div class="flex items-center gap-4">
+                    <div class="relative flex items-center justify-center size-6 rounded-full transition-all"
+                        [ngClass]="workout.completed ? 'bg-primary text-gray-900' : 'bg-gray-200 dark:bg-gray-700'">
+                        <span *ngIf="workout.completed" class="material-symbols-outlined text-sm font-bold">check</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-base font-bold transition-colors"
+                            [ngClass]="workout.completed ? 'text-gray-400 dark:text-gray-500 line-through' : ''">
+                            {{ workout.name }}
+                        </span>
+                        <span class="text-xs"
+                            [ngClass]="workout.completed ? 'text-gray-400 dark:text-gray-600' : (workouts.indexOf(workout) === completedCount ? 'text-primary font-medium' : 'text-gray-500 dark:text-gray-400')">
+                            {{ workout.description }}
+                        </span>
+                    </div>
+                </div>
+                <div *ngIf="!workout.completed && workouts.indexOf(workout) === completedCount"
+                    class="flex items-center justify-center size-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400">
+                    <span class="material-symbols-outlined">play_arrow</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

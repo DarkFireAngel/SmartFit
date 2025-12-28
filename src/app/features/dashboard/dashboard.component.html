@@ -1,0 +1,237 @@
+<!-- Top App Bar -->
+<header class="sticky top-0 z-30 flex items-center justify-between px-4 py-4 glass-panel backdrop-blur-md">
+    <div class="flex items-center gap-3">
+        <div class="relative group cursor-pointer">
+            <div
+                class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/20 bg-gray-300 dark:bg-gray-700">
+            </div>
+            <div
+                class="absolute bottom-0 right-0 size-3 bg-primary rounded-full border-2 border-background-light dark:border-background-dark">
+            </div>
+        </div>
+        <div>
+            <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Bentornato,</p>
+            <h2 class="text-lg font-bold leading-tight tracking-tight">{{ userName }}</h2>
+        </div>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Date Navigator -->
+        <div class="flex items-center gap-1 bg-white dark:bg-card-dark rounded-lg shadow-sm p-1">
+            <button (click)="previousDay()"
+                class="flex items-center justify-center size-8 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+            </button>
+            <button (click)="goToToday()"
+                class="flex flex-col items-center px-2 min-w-[80px] hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+                <span class="text-[10px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{
+                    isToday ? 'Oggi' : dateService.getDayOfWeek().slice(0, 3) }}</span>
+                <span class="text-sm font-bold">{{ formatDate() }}</span>
+            </button>
+            <button (click)="nextDay()"
+                class="flex items-center justify-center size-8 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </button>
+        </div>
+
+        <!-- Reports Button -->
+        <button routerLink="/reports"
+            class="flex items-center justify-center size-10 rounded-full bg-white dark:bg-card-dark shadow-sm hover:bg-gray-50 dark:hover:bg-opacity-80 transition-colors">
+            <span class="material-symbols-outlined text-[24px]">bar_chart</span>
+        </button>
+
+        <!-- Notifications Button -->
+        <button
+            class="flex items-center justify-center size-10 rounded-full bg-white dark:bg-card-dark shadow-sm hover:bg-gray-50 dark:hover:bg-opacity-80 transition-colors">
+            <span class="material-symbols-outlined text-[24px]">notifications</span>
+        </button>
+    </div>
+</header>
+
+<!-- Calorie Summary Hero -->
+<section class="px-4 pt-4 pb-2">
+    <div class="flex flex-col items-center justify-center bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-sm">
+        <div class="relative size-48 flex items-center justify-center mb-4">
+            <!-- Progress Ring Background -->
+            <svg class="size-full -rotate-90 transform" viewBox="0 0 100 100">
+                <circle class="text-gray-100 dark:text-gray-800" cx="50" cy="50" fill="transparent" r="40"
+                    stroke="currentColor" stroke-width="8">
+                </circle>
+                <!-- Progress Ring Fill -->
+                <circle class="text-primary transition-all duration-300" cx="50" cy="50" fill="transparent" r="40"
+                    stroke="currentColor" [attr.stroke-dasharray]="251.2" [attr.stroke-dashoffset]="dashOffset"
+                    stroke-linecap="round" stroke-width="8">
+                </circle>
+            </svg>
+            <div class="absolute flex flex-col items-center">
+                <span class="material-symbols-outlined text-primary text-3xl mb-1">local_fire_department</span>
+                <h1 class="text-3xl font-extrabold tracking-tight">{{ caloriesConsumed }}</h1>
+                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">kcal assunte</p>
+            </div>
+        </div>
+        <div class="w-full flex justify-between items-center px-4">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Obiettivo: <span class="text-gray-900 dark:text-white font-bold">{{ calorieGoal }}</span>
+            </p>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Rimanenti: <span class="text-primary font-bold">{{ caloriesRemaining }}</span>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Stats / Macros -->
+<section class="px-4 py-2">
+    <div class="grid grid-cols-3 gap-3">
+        <!-- Protein -->
+        <div
+            class="flex flex-col items-start gap-1 rounded-xl p-4 bg-card-light dark:bg-card-dark shadow-sm border border-transparent hover:border-primary/20 transition-all">
+            <div class="flex items-center gap-1 mb-1">
+                <div class="size-2 rounded-full bg-blue-400"></div>
+                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Proteine</p>
+            </div>
+            <p class="text-lg font-bold leading-tight">{{ proteinConsumed }}g</p>
+            <div class="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full mt-1 overflow-hidden">
+                <div class="h-full bg-blue-400 rounded-full transition-all duration-300"
+                    [style.width.%]="proteinProgress"></div>
+            </div>
+        </div>
+
+        <!-- Carbs -->
+        <div
+            class="flex flex-col items-start gap-1 rounded-xl p-4 bg-card-light dark:bg-card-dark shadow-sm border border-transparent hover:border-primary/20 transition-all">
+            <div class="flex items-center gap-1 mb-1">
+                <div class="size-2 rounded-full bg-primary"></div>
+                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Carbo</p>
+            </div>
+            <p class="text-lg font-bold leading-tight">{{ carbsConsumed }}g</p>
+            <div class="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full mt-1 overflow-hidden">
+                <div class="h-full bg-primary rounded-full transition-all duration-300" [style.width.%]="carbsProgress">
+                </div>
+            </div>
+        </div>
+
+        <!-- Fat -->
+        <div
+            class="flex flex-col items-start gap-1 rounded-xl p-4 bg-card-light dark:bg-card-dark shadow-sm border border-transparent hover:border-primary/20 transition-all">
+            <div class="flex items-center gap-1 mb-1">
+                <div class="size-2 rounded-full bg-orange-400"></div>
+                <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Grassi</p>
+            </div>
+            <p class="text-lg font-bold leading-tight">{{ fatsConsumed }}g</p>
+            <div class="w-full h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full mt-1 overflow-hidden">
+                <div class="h-full bg-orange-400 rounded-full transition-all duration-300"
+                    [style.width.%]="fatsProgress"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Meals Section -->
+<section class="mt-2">
+    <div class="flex items-center justify-between px-4 pb-2 pt-4">
+        <h3 class="text-lg font-bold leading-tight">Pasti</h3>
+        <button routerLink="/meals" class="text-sm font-bold text-primary hover:text-primary/80">Vedi tutto</button>
+    </div>
+    <div class="flex flex-col gap-3 px-4">
+        <!-- Meal Items -->
+        <div *ngFor="let meal of meals"
+            class="group flex items-center justify-between rounded-xl bg-card-light dark:bg-card-dark p-3 shadow-sm hover:shadow-md transition-all cursor-pointer">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center justify-center rounded-lg shrink-0 size-12" [ngClass]="{
+               'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400': meal.iconColor === 'yellow',
+               'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400': meal.iconColor === 'orange'
+             }">
+                    <span class="material-symbols-outlined">{{ meal.icon }}</span>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <p
+                        class="text-base font-bold leading-normal line-clamp-1 group-hover:text-primary transition-colors">
+                        {{ meal.name }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{{ meal.description }}</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="text-base font-bold">{{ meal.calories }}</span>
+                <span class="text-xs text-gray-400">kcal</span>
+            </div>
+        </div>
+
+        <!-- Add Meal Button -->
+        <button routerLink="/meals"
+            class="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 p-3 text-gray-500 dark:text-gray-400 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all">
+            <span class="material-symbols-outlined">add_circle</span>
+            <span class="text-sm font-medium">Aggiungi Pasto</span>
+        </button>
+    </div>
+</section>
+
+<!-- Hydration Section -->
+<section class="mt-6 px-4">
+    <h3 class="text-lg font-bold leading-tight pb-3">Idratazione</h3>
+    <div
+        class="relative overflow-hidden rounded-xl bg-blue-50 dark:bg-blue-900/10 p-5 shadow-sm border border-blue-100 dark:border-blue-800/30">
+        <div class="flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-4">
+                <div
+                    class="flex items-center justify-center rounded-full bg-white dark:bg-blue-900/40 text-blue-500 shrink-0 size-12 shadow-sm">
+                    <span class="material-symbols-outlined">water_drop</span>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {{ waterConsumed | number:'1.1-1' }}
+                        <span class="text-sm font-normal text-gray-500">/ {{ waterGoal }} L</span>
+                    </p>
+                    <p class="text-xs font-medium text-blue-600 dark:text-blue-300">Ottimo lavoro!</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button (click)="removeWater(250)"
+                    class="size-8 rounded-full bg-white dark:bg-card-dark shadow-sm flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 active:scale-95 transition-all">
+                    <span class="material-symbols-outlined text-[20px]">remove</span>
+                </button>
+                <button (click)="addWater(250)"
+                    class="size-10 rounded-full bg-blue-500 shadow-md shadow-blue-500/30 flex items-center justify-center text-white hover:bg-blue-600 active:scale-95 transition-all">
+                    <span class="material-symbols-outlined">add</span>
+                </button>
+            </div>
+        </div>
+        <!-- Background decoration -->
+        <div class="absolute -right-6 -bottom-8 opacity-10 text-blue-500 dark:text-blue-400">
+            <span class="material-symbols-outlined text-[150px]">water_drop</span>
+        </div>
+    </div>
+</section>
+
+<!-- Workout Section -->
+<section class="mt-6 px-4 mb-4">
+    <div class="flex items-center justify-between pb-3">
+        <h3 class="text-lg font-bold leading-tight">Allenamenti</h3>
+        <button routerLink="/workout" class="text-sm font-bold text-primary hover:text-primary/80">Cronologia</button>
+    </div>
+    <div class="flex flex-col gap-3">
+        <div
+            class="flex items-center justify-between rounded-xl bg-card-light dark:bg-card-dark p-4 shadow-sm border-l-4 border-primary">
+            <div class="flex items-center gap-4">
+                <div
+                    class="flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white shrink-0 size-12">
+                    <span class="material-symbols-outlined">directions_run</span>
+                </div>
+                <div>
+                    <p class="text-base font-bold leading-tight">{{ todayWorkout.name }}</p>
+                    <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <span class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                            {{ todayWorkout.duration }} min
+                        </span>
+                        <span class="size-1 rounded-full bg-gray-300"></span>
+                        <span class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+                            {{ todayWorkout.calories }} kcal
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <span class="material-symbols-outlined text-gray-300">chevron_right</span>
+        </div>
+    </div>
+</section>
