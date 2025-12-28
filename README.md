@@ -189,8 +189,7 @@ Questo progetto è distribuito sotto licenza MIT. Vedi il file [LICENSE](LICENSE
 ## 👨‍💻 Autore
 
 **Angelo**
-- GitHub: [@tuousername](https://github.com/tuousername)
-- Email: angelo@example.com
+- Email: angelo.nicolaci.commerciale@gmail.com
 
 ## 🤝 Contribuire
 
